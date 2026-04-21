@@ -1,0 +1,88 @@
+{
+  "courses": [
+    {
+      "name": "Full-Stack Engineering",
+      "duration": "24 weeks",
+      "price": "$8,500",
+      "schedule": "Mon-Fri, 9am-5pm",
+      "prerequisites": "Basic logic, laptop"
+    },
+    {
+      "name": "Data Science & AI",
+      "duration": "16 weeks",
+      "price": "$7,200",
+      "schedule": "Tue/Thu Evenings + Sat",
+      "prerequisites": "Python, Statistics"
+    },
+    {
+      "name": "UI/UX Design",
+      "duration": "12 weeks",
+      "price": "$5,000",
+      "schedule": "Weekends",
+      "prerequisites": "Creativity, Portfolio"
+    }
+  ],
+  "faqs": [
+    {
+      "question": "What is Nova?",
+      "answer": "Nova is the official NexPath admissions assistant."
+    },
+    {
+      "question": "Can I get a refund?",
+      "answer": "Refunds are available up to 7 days before course start."
+    },
+    {
+      "question": "Do you offer job placement?",
+      "answer": "Yes, we have a 95% placement rate within 6 months."
+    },
+    {
+      "question": "Where are you located?",
+      "answer": "We are a global institute with physical campuses in London, New York, and Singapore."
+    },
+    {
+      "question": "Is there a certificate?",
+      "answer": "Yes, you receive a verified NexPath professional certificate upon completion."
+    },
+    {
+      "question": "What equipment do I need?",
+      "answer": "A modern laptop with at least 8GB RAM and a stable internet connection."
+    },
+    {
+      "question": "Are there scholarships?",
+      "answer": "We offer merit-based and need-based scholarships of up to 50% tuition."
+    },
+    {
+      "question": "Can I work while studying?",
+      "answer": "Our part-time tracks are designed specifically for working professionals."
+    },
+    {
+      "question": "What is the typical class size?",
+      "answer": "We maintain a strict 1:15 instructor-to-student ratio."
+    },
+    {
+      "question": "Do you have alumni network access?",
+      "answer": "All graduates join the NexPath Global Alumni Network with 50,000+ members."
+    }
+  ],
+  "lead_stages": [
+    {
+      "stage": "interested",
+      "criteria": "Asked about courses"
+    },
+    {
+      "stage": "warm",
+      "criteria": "Asked about price or schedule"
+    },
+    {
+      "stage": "hot",
+      "criteria": "Requested enrollment details"
+    }
+  ],
+  "static_responses": {
+    "greeting": "You're here. Good. Let's figure out where you're headed.",
+    "fallback": "That doesn't move you forward. Ask something that actually matters to your future.",
+    "drift_guard": "I can only discuss NexPath courses and admissions. Shall we get back to those?",
+    "handoff": "I'll connect you with a specialist. Please leave your details.",
+    "lead_success": "Thank you! We'll be in touch."
+  }
+}
