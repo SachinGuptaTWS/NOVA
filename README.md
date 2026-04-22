@@ -1,6 +1,6 @@
 # NexPath NOVA Chatbot
 
-NexPath NOVA is admissions assistant designed to guide students through course selection and enrollment.
+NexPath NOVA is an advanced, production-ready admissions assistant designed to guide students through course selection and enrollment with high resiliency.
 
 ## Architecture
 
@@ -8,11 +8,13 @@ NexPath NOVA is admissions assistant designed to guide students through course s
 graph TD
     User((User)) <--> Frontend[React/Vite Frontend]
     Frontend <--> API[FastAPI Backend]
-    API <--> Intent[Intent Classifier]
-    API <--> Selector[Mode Selector]
-    API <--> LLM[Gemini 2.5 LLM]
-    API <--> Store[Session Store]
-    API <--> Data[(data.json)]
+    API <--> Intent[Regex Intent Classifier]
+    API <--> Selector[O-1 Mode Selector]
+    API <--> LLM[Primary: Gemini 2.5 Flash]
+    API <--> Groq[Fallback: Groq Llama 3.1]
+    API <--> Store[Thread-Safe LRU Session Store]
+    API <--> Data[(Immutable data.json)]
+    API --> Leads[(Atomic leads.json writes)]
 ```
 
 ## Mode Selector Pseudocode
@@ -35,10 +37,10 @@ FUNCTION select_mode(intent):
 
 ## Design Decisions
 
-1. **Rule-Based Pre-Classification**: We use a keyword-based intent classifier before the LLM call to ensure consistent state management (handoffs, lead capture) and to reduce token usage for simple queries.
-2. **Stateless LLM Logic**: The backend maintains session history in a `SessionStore` and injects it into every LLM call, ensuring the API remains stateless and scalable.
-3. **Stateless UI**: The frontend is a thin layer that reflects the state (intent, mode, flags) returned by the backend, ensuring a single source of truth.
-4. **Post-Generation Filtering**: To strictly enforce "Forbidden Phrases" (e.g., 'cheap'), we implement a secondary filter that sanitizes LLM output before it reaches the user.
+1. **Rule-Based Pre-Classification**: We use an optimal O(1) dictionary routing and word-boundary regex intent classifier before the LLM call to ensure accurate state management (handoffs, lead capture).
+2. **High Availability Fallbacks**: The system utilizes Google Gemini 2.5 Flash as the primary LLM, with an automatic fallback to Groq (Llama 3.1) upon 503 or timeout errors to guarantee uptime.
+3. **Robust State & Concurrency**: Backend maintains session sequences in a threaded LRU `SessionStore` mitigating memory bounds, and relies on `tempfile` atomic renames for `leads.json` to prevent race condition data corruption.
+4. **Strict Safety Pipelines**: Prompt injection defenses isolate user payloads, Pydantic schemas enforce strict payload boundary sanitization (e.g., `< 1MB` constraints), and post-generation regex filters sanitize LLM conversational crutches before reaching the frontend.
 
 ## Setup
 
@@ -46,7 +48,7 @@ FUNCTION select_mode(intent):
    ```bash
    cd backend
    pip install -r requirements.txt
-   # Set API_KEY in .env
+   # Set both API_KEY and GROQ_API_KEY in backend/.env
    uvicorn app.main:app --reload
    ```
 
