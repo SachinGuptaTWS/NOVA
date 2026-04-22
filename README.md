@@ -1,6 +1,6 @@
 # NexPath NOVA Chatbot
 
-NexPath NOVA is a production-ready admissions assistant designed to guide students through course selection and enrollment.
+NexPath NOVA is admissions assistant designed to guide students through course selection and enrollment.
 
 ## Architecture
 

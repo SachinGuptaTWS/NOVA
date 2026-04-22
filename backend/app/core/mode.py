@@ -2,6 +2,7 @@ from enum import Enum
 from .intent import Intent
 
 class Mode(Enum):
+    """Operational persona styles applied to the LLM agent."""
     CONSULTANT = "Consultant"
     EXPERT = "Expert"
     PEER = "Peer"
@@ -9,15 +10,14 @@ class Mode(Enum):
     SUPPORT = "Support"
     FALLBACK = "Fallback"
 
+INTENT_TO_MODE = {
+    Intent.CAREER_QUERY: Mode.CONSULTANT,
+    Intent.COURSE_QUERY: Mode.EXPERT,
+    Intent.CASUAL: Mode.PEER,
+    Intent.LEAD_CAPTURE: Mode.LEADFLOW,
+    Intent.COMPLAINT: Mode.SUPPORT,
+}
+
 def select_mode(intent: Intent) -> Mode:
-    if intent == Intent.CAREER_QUERY:
-        return Mode.CONSULTANT
-    if intent == Intent.COURSE_QUERY:
-        return Mode.EXPERT
-    if intent == Intent.CASUAL:
-        return Mode.PEER
-    if intent == Intent.LEAD_CAPTURE:
-        return Mode.LEADFLOW
-    if intent == Intent.COMPLAINT:
-        return Mode.SUPPORT
-    return Mode.FALLBACK
+    """Map primary intent directly to conversational Mode personality."""
+    return INTENT_TO_MODE.get(intent, Mode.FALLBACK)
